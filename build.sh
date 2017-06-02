@@ -28,6 +28,7 @@ mkdir -p "out/${MINGW_CHOST}"
 [[ -d "build-${pkgname}" ]] && rm -rf "build-${pkgname}"
 mkdir -p "build-${pkgname}"
 
+# build & install
 cd "build-${pkgname}"
 
 ../${pkgname}/configure --prefix=$PWD/../out/${MINGW_CHOST} \
@@ -37,5 +38,11 @@ cd "build-${pkgname}"
 make
 
 make install
+
+# copy the license
+cp ../${pkgname}/COPYING ../out/${MINGW_CHOST}/
+
+# create source information
+echo `git ls-remote --get-url`/commit/`git rev-parse HEAD` > ../out/${MINGW_CHOST}/SOURCES
 
 strip.exe ../out/${MINGW_CHOST}/bin/*.exe
